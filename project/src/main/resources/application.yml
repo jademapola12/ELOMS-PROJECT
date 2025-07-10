@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: project
+  datasource:
+    url: jdbc:mariadb://localhost:3306/eloms
+    username: JADE
+    password: 091216
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
