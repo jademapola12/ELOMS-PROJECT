@@ -1,6 +1,5 @@
 package com.mini.project.service;
 
-import com.mini.project.dto.EmployeeDto;
 import com.mini.project.dto.EmployeeUpdateDto;
 import com.mini.project.entity.Employee;
 import com.mini.project.entity.Position;
@@ -22,7 +21,7 @@ public class EmployeeService {
         this.positionRepository = positionRepository;
     }
 
-    public Employee createUpdateEmployee(EmployeeDto employeeDto) {
+    public Employee createUpdateEmployee(Employee employeeDto) {
         Position position = positionRepository.findById(employeeDto.getPositionId()).orElse(null);
         if(position == null) {
             return null;

@@ -1,6 +1,5 @@
 package com.mini.project.entity;
 
-import com.mini.project.enums.EmployeeRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,23 +14,32 @@ public class Employee {
     @Id
     private String username;
 
+    private String password;
+
     private String email;
 
     private String firstName;
 
     private String lastName;
 
+    private String sex;
+
+    private String birthday;
+
     private String address;
 
-    private String password;
-
     private String contactNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Department department;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Position position;
 
     @Enumerated(EnumType.STRING)
-    private EmployeeRole role;
+    private String status;
+
+    private String dateHired;
 
     //ADD FIELDS FOR MORE INFO
 }
