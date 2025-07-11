@@ -11,9 +11,9 @@ import java.time.LocalDate;
 @Builder
 public class EmployeeUpdateDto {
     private String username;
+    private String password;
     private String firstName;
     private String lastName;
-    private String password;
     private String email;
     private String address;
     private String contactNumber;
