@@ -43,7 +43,7 @@ public class PositionController {
     // delete by id
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Position> deletePositionById(@PathVariable Long id) {
-        Position position = this.positionService.getPositionById(id);
+        Position position = this.positionService.deletePositionById(id);
         if (position == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
