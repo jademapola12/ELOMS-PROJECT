@@ -19,10 +19,10 @@ public class Department {
     private String departmentName;
     @Column(name ="department_head")
     private String departmentHead;
-    @Column(name="created_at")
-    private LocalDate createdAt;
     @Column(name="updated_at")
     private LocalDate updatedAt;
+    @Column(name="created_at")
+    private LocalDate createdAt;
     @Column(name="updated_by")
     private String updatedby;
     @Column(name="created_by")
