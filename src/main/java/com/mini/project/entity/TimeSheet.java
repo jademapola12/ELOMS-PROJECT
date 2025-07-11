@@ -13,14 +13,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class TimeSheet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
-    private LocalDate date;
+    private String email; // put username her
+
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 

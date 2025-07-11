@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "employee")
 public class Employee {
     @Id
     private String username;
@@ -26,9 +27,11 @@ public class Employee {
 
     private String contactNumber;
 
-    private String position;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Position position;
 
     @Enumerated(EnumType.STRING)
     private EmployeeRole role;
 
+    //ADD FIELDS FOR MORE INFO
 }
