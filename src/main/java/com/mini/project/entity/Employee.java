@@ -1,7 +1,10 @@
 package com.mini.project.entity;
 
+import com.mini.project.enums.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -16,19 +19,24 @@ public class Employee {
 
     private String password;
 
-    private String email;
-
     private String firstName;
 
     private String lastName;
 
+    private String email;
+
+    @Enumerated(EnumType.STRING)
     private String sex;
 
-    private String birthday;
+    private LocalDate birthday;
 
     private String address;
 
     private String contactNumber;
+
+    private String emergencyContactPerson;
+
+    private String emergencyContactNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
@@ -36,10 +44,10 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     private Position position;
 
+    private LocalDate dateHired;
+
     @Enumerated(EnumType.STRING)
-    private String status;
+    private AccountStatus accountStatus;
 
-    private String dateHired;
 
-    //ADD FIELDS FOR MORE INFO
 }

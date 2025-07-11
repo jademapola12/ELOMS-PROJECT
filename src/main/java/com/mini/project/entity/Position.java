@@ -20,5 +20,9 @@ public class Position {
     private String positionName;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    private Employee employee;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
+
 }
