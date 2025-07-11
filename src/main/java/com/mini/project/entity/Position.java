@@ -21,11 +21,11 @@ public class Position {
     @Column(name = "position_name")
     private String positionName;
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "created_by")
     private String createdBy;
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
     @Column(name = "updated_by")
     private  String updatedBy;
 

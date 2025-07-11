@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -20,14 +21,12 @@ public class Department {
     @Column(name ="department_head")
     private String departmentHead;
     @Column(name="updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
     @Column(name="created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     @Column(name="updated_by")
-    private String updatedby;
+    private String updatedBy;
     @Column(name="created_by")
-    private String createdby;
-
-
+    private String createdBy;
 
 }
