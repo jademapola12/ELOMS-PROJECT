@@ -15,13 +15,19 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name ="department_name")
     private String departmentName;
-    private LocalDate dateCreated;
+    @Column(name ="department_head")
+    private String departmentHead;
+    @Column(name="created_at")
+    private LocalDate createdAt;
+    @Column(name="updated_at")
+    private LocalDate updatedAt;
+    @Column(name="updated_by")
+    private String updatedby;
+    @Column(name="created_by")
+    private String createdby;
 
-    @ManyToOne
-    private Employee employee;
 
-    @ManyToOne
-    private Position position;
+
 }

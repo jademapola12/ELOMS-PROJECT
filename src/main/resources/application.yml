@@ -2,9 +2,9 @@ spring:
   application:
     name: project
   datasource:
-    url: jdbc:mariadb://45.76.99.38:3306/eloms
-    username: root
-    password: GmuV9Xpgc9MShRz
+    url: jdbc:mariadb://localhost:3306/ems
+    username: JADE
+    password: 091216
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:

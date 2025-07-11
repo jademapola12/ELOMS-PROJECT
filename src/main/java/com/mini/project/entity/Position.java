@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,12 +18,15 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "position_name")
     private String positionName;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Employee employee;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Department department;
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+    @Column(name = "created_by")
+    private String createdBy;
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
+    @Column(name = "updated_by")
+    private  String updatedBy;
 
 }
