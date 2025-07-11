@@ -5,12 +5,12 @@ import com.mini.project.dto.EmployeeUpdateDto;
 //import com.mini.project.entity.Department;
 import com.mini.project.entity.Department;
 import com.mini.project.entity.Employee;
-//import com.mini.project.entity.Position;
-//import com.mini.project.repository.DepartmentRepository;
+mport com.mini.project.entity.Position;
+import com.mini.project.repository.DepartmentRepository;
 import com.mini.project.entity.Position;
 import com.mini.project.repository.DepartmentRepository;
 import com.mini.project.repository.EmployeeRepository;
-//import com.mini.project.repository.PositionRepository;
+import com.mini.project.repository.PositionRepository;
 import com.mini.project.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,8 +27,8 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final PositionRepository positionRepository;
     private final DepartmentRepository departmentRepository;
-    // private final DepartmentRepository departmentRepository;
- //   private final PositionRepository positionRepository;
+    private final DepartmentRepository departmentRepository;
+    private final PositionRepository positionRepository;
 
     public Employee save(EmployeeDto dto, String createdBy) {
         Position position = positionRepository.findById(dto.getPositionId()).orElse(null);
@@ -80,13 +80,13 @@ public class EmployeeService {
         employeeRepository.deleteById(username);
     }
 
-//    private Department getDepartment(Long id) {
-//        return id != null ? departmentRepository.findById(id).orElse(null) : null;
-//    }
+    private Department getDepartment(Long id) {
+        return id != null ? departmentRepository.findById(id).orElse(null) : null;
+    }
 
-//    private Position getPosition(Long id) {
-//        return id != null ? positionRepository.findById(id).orElse(null) : null;
- //   }
+    private Position getPosition(Long id) {
+        return id != null ? positionRepository.findById(id).orElse(null) : null;
+    }
 
     private EmployeeDto mapToDto(Employee e) {
         return EmployeeDto.builder()

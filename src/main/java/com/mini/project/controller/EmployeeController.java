@@ -22,6 +22,16 @@ public class EmployeeController {
                                            @PathVariable String createdBy) {
         return ResponseEntity.ok(employeeService.save(dto, createdBy));
     }
+    @PutMapping("/{username}/{updatedBy}")
+    public ResponseEntity<Employee> update(@PathVariable String username,
+                                           @PathVariable String updatedBy,
+                                           @RequestBody EmployeeUpdateDto dto) {
+        Employee updated = employeeService.update(username, dto, updatedBy);
+        if (updated == null) {
+            return ResponseEntity.notFound().build(); // or badRequest
+        }
+        return ResponseEntity.ok(updated);
+    }
 
     @GetMapping("/{username}")
     public ResponseEntity<EmployeeDto> getById(@PathVariable String username) {
