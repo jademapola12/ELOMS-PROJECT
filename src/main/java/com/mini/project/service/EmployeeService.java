@@ -8,6 +8,7 @@ import com.mini.project.repository.DepartmentRepository;
 import com.mini.project.repository.EmployeeRepository;
 import com.mini.project.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,6 +24,9 @@ public class EmployeeService {
     private final DepartmentRepository departmentRepository;
     private final PositionRepository positionRepository;
 
+    // to use bcrypt on password
+    private BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder(12);
+
     public Employee saveOrUpdate(EmployeeDto dto, String currentUser) {
         Department department = departmentRepository.findById(dto.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Department not found"));
@@ -33,7 +37,11 @@ public class EmployeeService {
 
         Employee employee = employeeRepository.findById(dto.getUsername()).orElse(new Employee());
         employee.setUsername(dto.getUsername());
-        employee.setPassword(dto.getPassword());
+//        employee.setPassword(dto.getPassword());
+
+        // if using bcrypt for password
+        employee.setPassword(encoder.encode(dto.getPassword()));
+
         employee.setFirstName(dto.getFirstName());
         employee.setLastName(dto.getLastName());
         employee.setEmail(dto.getEmail());

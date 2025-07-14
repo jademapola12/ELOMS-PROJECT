@@ -10,3 +10,7 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: false
+  security:
+    user:
+      name: admin
+      password: pass123
