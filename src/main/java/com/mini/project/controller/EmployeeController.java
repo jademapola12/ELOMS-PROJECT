@@ -59,7 +59,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<EmployeeDto>> getAll() {
+    public ResponseEntity<List<Employee>> getAll() {
         return ResponseEntity.ok(employeeService.getAll());
     }
 

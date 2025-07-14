@@ -77,35 +77,17 @@ public class EmployeeService {
                 .build();
     }
 
-    public List<EmployeeDto> getAll() {
-        return employeeRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
     }
 
-    public Optional<EmployeeDto> getByUsername(String username) {
-        return employeeRepository.findById(username).map(this::toDto);
+    public Optional<Employee> getByUsername(String username) {
+        return employeeRepository.findById(username);
     }
 
     public void delete(String username) {
         employeeRepository.deleteById(username);
     }
 
-    private EmployeeDto toDto(Employee employee) {
-        return EmployeeDto.builder()
-                .username(employee.getUsername())
-                .password(employee.getPassword())
-                .firstName(employee.getFirstName())
-                .lastName(employee.getLastName())
-                .email(employee.getEmail())
-                .sex(employee.getSex())
-                .birthday(employee.getBirthday())
-                .address(employee.getAddress())
-                .contactNumber(employee.getContactNumber())
-                .emergencyContactPerson(employee.getEmergencyContactPerson())
-                .emergencyContactNumber(employee.getEmergencyContactNumber())
-                .departmentId(employee.getDepartment().getId())
-                .positionId(employee.getPosition().getId())
-                .dateHired(employee.getDateHired())
-                .accountStatus(employee.getAccountStatus())
-                .build();
-    }
+
 }

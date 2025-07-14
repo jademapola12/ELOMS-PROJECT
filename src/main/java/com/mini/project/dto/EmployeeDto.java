@@ -5,10 +5,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
 public class EmployeeDto {
     private String username;
     private String password;
