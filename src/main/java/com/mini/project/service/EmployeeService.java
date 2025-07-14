@@ -1,16 +1,11 @@
 package com.mini.project.service;
 
 import com.mini.project.dto.EmployeeDto;
-import com.mini.project.dto.EmployeeUpdateDto;
-//import com.mini.project.entity.Department;
 import com.mini.project.entity.Department;
 import com.mini.project.entity.Employee;
-mport com.mini.project.entity.Position;
-import com.mini.project.repository.DepartmentRepository;
 import com.mini.project.entity.Position;
 import com.mini.project.repository.DepartmentRepository;
 import com.mini.project.repository.EmployeeRepository;
-import com.mini.project.repository.PositionRepository;
 import com.mini.project.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,9 +22,6 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final PositionRepository positionRepository;
     private final DepartmentRepository departmentRepository;
-    private final DepartmentRepository departmentRepository;
-    private final PositionRepository positionRepository;
-
     public Employee save(EmployeeDto dto, String createdBy) {
         Position position = positionRepository.findById(dto.getPositionId()).orElse(null);
         if (position == null) {
@@ -100,8 +92,8 @@ public class EmployeeService {
                 .contactNumber(e.getContactNumber())
                 .emergencyContactPerson(e.getEmergencyContactPerson())
                 .emergencyContactNumber(e.getEmergencyContactNumber())
-             //   .departmentId(e.getDepartment() != null ? e.getDepartment().getId() : null)
-            //    .positionId(e.getPosition() != null ? e.getPosition().getId() : null)
+                .departmentId(e.getDepartment() != null ? e.getDepartment().getId() : null)
+                .positionId(e.getPosition() != null ? e.getPosition().getId() : null)
                 .dateHired(e.getDateHired())
                 .accountStatus(e.getAccountStatus())
                 .build();
