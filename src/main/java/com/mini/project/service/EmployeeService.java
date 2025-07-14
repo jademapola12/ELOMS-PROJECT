@@ -1,13 +1,17 @@
 package com.mini.project.service;
 
 import com.mini.project.dto.EmployeeDto;
+import com.mini.project.dto.ResponseDto;
 import com.mini.project.entity.Department;
 import com.mini.project.entity.Employee;
 import com.mini.project.entity.Position;
+import com.mini.project.enums.MessageType;
+import com.mini.project.enums.StatusType;
 import com.mini.project.repository.DepartmentRepository;
 import com.mini.project.repository.EmployeeRepository;
 import com.mini.project.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +31,8 @@ public class EmployeeService {
     // to use bcrypt on password
     private BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder(12);
 
-    public Employee saveOrUpdate(EmployeeDto dto, String currentUser) {
+    public ResponseDto saveOrUpdate(EmployeeDto dto, String currentUser) {
+
         Department department = departmentRepository.findById(dto.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Department not found"));
         Position position = positionRepository.findById(dto.getPositionId())
@@ -64,7 +69,12 @@ public class EmployeeService {
         employee.setUpdatedAt(LocalDate.now());
         employee.setUpdatedBy(currentUser);
 
-        return employeeRepository.save(employee);
+        employee = employeeRepository.save(employee);
+        return ResponseDto.builder()
+                .data(employee)
+                .status(StatusType.SUCCESS)
+                .messageType(MessageType.SUCCESSFULLY_SAVED)
+                .build();
     }
 
     public List<EmployeeDto> getAll() {
