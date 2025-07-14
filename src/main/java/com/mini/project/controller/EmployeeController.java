@@ -64,7 +64,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<EmployeeDto> getById(@PathVariable String username) {
+    public ResponseEntity<Employee> getById(@PathVariable String username) {
         return employeeService.getByUsername(username)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
