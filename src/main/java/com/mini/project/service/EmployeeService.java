@@ -20,82 +20,74 @@ import java.util.stream.Collectors;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final PositionRepository positionRepository;
     private final DepartmentRepository departmentRepository;
-    public Employee save(EmployeeDto dto, String createdBy) {
-        Position position = positionRepository.findById(dto.getPositionId()).orElse(null);
-        if (position == null) {
-            return null;
-        }
-        Department department = departmentRepository.findById(dto.getDepartmentId()).orElse(null);
-        if (department == null) {
-            return null;
-        }
+    private final PositionRepository positionRepository;
 
+    public Employee saveOrUpdate(EmployeeDto dto, String currentUser) {
+        Department department = departmentRepository.findById(dto.getDepartmentId())
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+        Position position = positionRepository.findById(dto.getPositionId())
+                .orElseThrow(() -> new RuntimeException("Position not found"));
 
-        Employee employee = employeeRepository.findByUsername(dto.getUsername()).orElse(null);
-        if (employee == null) {
-            employee = new Employee();
-            employee.setUsername(dto.getUsername());
-            employee.setPassword(dto.getPassword());
-            employee.setCreatedAt(LocalDate.now());
-            employee.setCreatedBy(createdBy);
-        }
-        employee.setAddress(dto.getAddress());
-        employee.setEmail(dto.getEmail());
+        boolean isNew = !employeeRepository.existsById(dto.getUsername());
+
+        Employee employee = employeeRepository.findById(dto.getUsername()).orElse(new Employee());
+        employee.setUsername(dto.getUsername());
+        employee.setPassword(dto.getPassword());
         employee.setFirstName(dto.getFirstName());
         employee.setLastName(dto.getLastName());
-        employee.setContactNumber(String.valueOf(dto.getContactNumber()));
+        employee.setEmail(dto.getEmail());
+        employee.setSex(dto.getSex());
+        employee.setBirthday(dto.getBirthday());
+        employee.setAddress(dto.getAddress());
+        employee.setContactNumber(dto.getContactNumber());
         employee.setEmergencyContactPerson(dto.getEmergencyContactPerson());
-        employee.setEmergencyContactNumber(String.valueOf(dto.getEmergencyContactNumber()));
-        employee.setUpdatedAt(LocalDate.now());
-        employee.setUpdatedBy(createdBy);
+        employee.setEmergencyContactNumber(dto.getEmergencyContactNumber());
         employee.setDepartment(department);
         employee.setPosition(position);
-        employee.setAccountStatus(dto.getAccountStatus());
-        employee.setBirthday(dto.getBirthday());
         employee.setDateHired(dto.getDateHired());
-        employee.setSex(dto.getSex());
+        employee.setAccountStatus(dto.getAccountStatus());
+
+        if (isNew) {
+            employee.setCreatedAt(LocalDate.now());
+            employee.setCreatedBy(currentUser);
+        }
+
+        employee.setUpdatedAt(LocalDate.now());
+        employee.setUpdatedBy(currentUser);
+
         return employeeRepository.save(employee);
     }
 
-
-    public Optional<EmployeeDto> findById(String username) {
-        return employeeRepository.findById(username).map(this::mapToDto);
+    public List<EmployeeDto> getAll() {
+        return employeeRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    public List<EmployeeDto> findAll() {
-        return employeeRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
+    public Optional<EmployeeDto> getByUsername(String username) {
+        return employeeRepository.findById(username).map(this::toDto);
     }
 
     public void delete(String username) {
         employeeRepository.deleteById(username);
     }
 
-    private Department getDepartment(Long id) {
-        return id != null ? departmentRepository.findById(id).orElse(null) : null;
-    }
-
-    private Position getPosition(Long id) {
-        return id != null ? positionRepository.findById(id).orElse(null) : null;
-    }
-
-    private EmployeeDto mapToDto(Employee e) {
+    private EmployeeDto toDto(Employee employee) {
         return EmployeeDto.builder()
-                .username(e.getUsername())
-                .firstName(e.getFirstName())
-                .lastName(e.getLastName())
-                .email(e.getEmail())
-                .sex(e.getSex())
-                .birthday(e.getBirthday())
-                .address(e.getAddress())
-                .contactNumber(e.getContactNumber())
-                .emergencyContactPerson(e.getEmergencyContactPerson())
-                .emergencyContactNumber(e.getEmergencyContactNumber())
-                .departmentId(e.getDepartment() != null ? e.getDepartment().getId() : null)
-                .positionId(e.getPosition() != null ? e.getPosition().getId() : null)
-                .dateHired(e.getDateHired())
-                .accountStatus(e.getAccountStatus())
+                .username(employee.getUsername())
+                .password(employee.getPassword())
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .email(employee.getEmail())
+                .sex(employee.getSex())
+                .birthday(employee.getBirthday())
+                .address(employee.getAddress())
+                .contactNumber(employee.getContactNumber())
+                .emergencyContactPerson(employee.getEmergencyContactPerson())
+                .emergencyContactNumber(employee.getEmergencyContactNumber())
+                .departmentId(employee.getDepartment().getId())
+                .positionId(employee.getPosition().getId())
+                .dateHired(employee.getDateHired())
+                .accountStatus(employee.getAccountStatus())
                 .build();
     }
 }

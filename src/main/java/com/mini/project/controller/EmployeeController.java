@@ -1,7 +1,6 @@
 package com.mini.project.controller;
 
 import com.mini.project.dto.EmployeeDto;
-import com.mini.project.dto.EmployeeUpdateDto;
 import com.mini.project.entity.Employee;
 import com.mini.project.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -17,32 +16,22 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @PostMapping("/set/{createdBy}")
-    public ResponseEntity<Employee> create(@RequestBody EmployeeDto dto,
-                                           @PathVariable String createdBy) {
-        return ResponseEntity.ok(employeeService.save(dto, createdBy));
+    @PostMapping("/save")
+    public ResponseEntity<Employee> save(@RequestBody EmployeeDto dto,
+                                         @RequestParam(defaultValue = "SYSTEM") String user) {
+        return ResponseEntity.ok(employeeService.saveOrUpdate(dto, user));
     }
-    @PutMapping("/{username}/{updatedBy}")
-    public ResponseEntity<Employee> update(@PathVariable String username,
-                                           @PathVariable String updatedBy,
-                                           @RequestBody EmployeeUpdateDto dto) {
-        Employee updated = employeeService.update(username, dto, updatedBy);
-        if (updated == null) {
-            return ResponseEntity.notFound().build(); // or badRequest
-        }
-        return ResponseEntity.ok(updated);
+
+    @GetMapping("/all")
+    public ResponseEntity<List<EmployeeDto>> getAll() {
+        return ResponseEntity.ok(employeeService.getAll());
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<EmployeeDto> getById(@PathVariable String username) {
-        return employeeService.findById(username)
+        return employeeService.getByUsername(username)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping
-    public ResponseEntity<List<EmployeeDto>> getAll() {
-        return ResponseEntity.ok(employeeService.findAll());
     }
 
     @DeleteMapping("/{username}")
