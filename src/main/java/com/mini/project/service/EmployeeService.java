@@ -11,14 +11,19 @@ import com.mini.project.repository.DepartmentRepository;
 import com.mini.project.repository.EmployeeRepository;
 import com.mini.project.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,5 +94,39 @@ public class EmployeeService {
         employeeRepository.deleteById(username);
     }
 
+    // for authentication of username & password login
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtService jwtService;
+
+    public String verify(Employee employee) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(employee.getUsername(), employee.getPassword())
+        );
+
+        if (authentication.isAuthenticated()) {
+            //return "Logged in successfully";
+            return jwtService.generateToken(employee.getUsername());
+        }
+
+        return "Login failed";
+    }
+
+    // find employees with sorting (ASC = ascending)
+    public List<Employee> getWithSorting(String field){
+        return employeeRepository.findAll(Sort.by(Sort.Direction.ASC, field));
+    }
+
+    // find employees with pagination
+    public Page<Employee> getWithPagination(int offset, int pageSize) {
+        return employeeRepository.findAll(PageRequest.of(offset, pageSize));
+    }
+
+    // find employees with pagination and sorting
+    public Page<Employee> getWithPaginationAndSorting(String field, int offset, int pageSize) {
+        return employeeRepository.findAll(PageRequest.of(offset,pageSize).withSort(Sort.by(Sort.Direction.ASC, field)));
+    }
 
 }

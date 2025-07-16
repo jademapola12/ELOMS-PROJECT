@@ -9,6 +9,7 @@ import com.mini.project.service.EmployeeService;
 import com.mini.project.utils.DepartmentUtility;
 import com.mini.project.utils.PositionUtility;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,9 +71,30 @@ public class EmployeeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/sort/{field}")
+    public ResponseEntity<List<Employee>> getBySort(@PathVariable String field) {
+        return ResponseEntity.ok(employeeService.getWithSorting(field));
+    }
+
+    @GetMapping("/page/{offset}/{pageSize}")
+    public ResponseEntity<Page<Employee>> getByPagination(@PathVariable int offset, @PathVariable int pageSize) {
+        return ResponseEntity.ok((Page<Employee>) employeeService.getWithPagination(offset,pageSize));
+    }
+
+    @GetMapping("/sort/{field}/page/{offset}/{pageSize}")
+    public ResponseEntity<Page<Employee>> getBySortAndPagination(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
+        return ResponseEntity.ok((Page<Employee>) employeeService.getWithPaginationAndSorting(field,offset,pageSize));
+    }
+
     @DeleteMapping("/{username}")
     public ResponseEntity<Void> delete(@PathVariable String username) {
         employeeService.delete(username);
         return ResponseEntity.noContent().build();
+    }
+
+    // for login using username and password
+    @PostMapping("/login")
+    public String login(@RequestBody Employee employee) {
+        return employeeService.verify(employee);
     }
 }

@@ -14,3 +14,21 @@ spring:
     user:
       name: admin
       password: pass123
+#  oauth2:
+#    client:
+#      registration:
+#        google:
+#          client-id: 828797183459-5b348p2gml1dbmr94ie41tp7ri6vvmd8.apps.googleusercontent.com
+#          client-secret: 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
+#          scope:
+#            - email
+#            - profile
+#          redirect-uri: "api/employees/login/oauth2/code/{registrationId}"
+#
+#        github:
+#          client-id: Ov23liBJrz88e7Em4atz
+#          client-secret: 3797f7ef3f469b5d681139c529effbd3d8f76311
+#          scope:
+#            - read:user
+#            - user:email
+#          redirect-uri: "api/employees/login/oauth2/code/{registrationId}"

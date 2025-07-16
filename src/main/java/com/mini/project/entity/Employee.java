@@ -1,5 +1,6 @@
 package com.mini.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mini.project.enums.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,7 @@ public class Employee {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Position position;
