@@ -10,11 +10,14 @@ import com.mini.project.enums.StatusType;
 import com.mini.project.repository.DepartmentRepository;
 import com.mini.project.repository.EmployeeRepository;
 import com.mini.project.repository.PositionRepository;
+import com.mini.project.utils.DepartmentUtility;
+import com.mini.project.utils.PositionUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,7 +37,43 @@ public class EmployeeService {
     private final PositionRepository positionRepository;
 
     // to use bcrypt on password
-    private BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder(12);
+    private final BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder(12);
+    private final DepartmentUtility departmentUtility;
+    private final PositionUtility positionUtility;
+
+    public ResponseEntity<ResponseDto> createUser(EmployeeDto employeeDto, String username){
+        // validation, forked from `EmployeeController`
+        if(employeeDto.getContactNumber().length() > 13 || employeeDto.getContactNumber().length() <= 9){
+            return ResponseDto.builder()
+                    .status(StatusType.INVALID)
+                    .messageType(MessageType.INVALID_CONTACT_NUMBER)
+                    .build()
+                    .getResponseEntity();
+        }
+        if(employeeDto.getEmergencyContactNumber().length() > 13 || employeeDto.getEmergencyContactNumber().length() <= 9) {
+            return ResponseDto.builder()
+                    .status(StatusType.INVALID)
+                    .messageType(MessageType.INVALID_EMERGENCY_CONTACT_NUMBER)
+                    .build()
+                    .getResponseEntity();
+        }
+
+        if(departmentUtility.getDepartmentById(employeeDto.getDepartmentId()) == null){
+            return ResponseDto.builder()
+                    .status(StatusType.ERROR)
+                    .messageType(MessageType.DEPARTMENT_NOT_FOUND)
+                    .build()
+                    .getResponseEntity();
+        }
+        if(positionUtility.getPositionById(employeeDto.getPositionId()) == null){
+            return ResponseDto.builder()
+                    .status(StatusType.ERROR)
+                    .messageType(MessageType.DEPARTMENT_NOT_FOUND)
+                    .build()
+                    .getResponseEntity();
+        }
+        return this.saveOrUpdate(employeeDto, username).getResponseEntity();
+    }
 
     public ResponseDto saveOrUpdate(EmployeeDto dto, String currentUser) {
 
@@ -47,7 +86,6 @@ public class EmployeeService {
 
         Employee employee = employeeRepository.findById(dto.getUsername()).orElse(new Employee());
         employee.setUsername(dto.getUsername());
-//        employee.setPassword(dto.getPassword());
 
         // if using bcrypt for password
         employee.setPassword(encoder.encode(dto.getPassword()));
@@ -95,10 +133,8 @@ public class EmployeeService {
     }
 
     // for authentication of username & password login
-    @Autowired
     AuthenticationManager authenticationManager;
 
-    @Autowired
     JwtService jwtService;
 
     public String verify(Employee employee) {
@@ -107,7 +143,6 @@ public class EmployeeService {
         );
 
         if (authentication.isAuthenticated()) {
-            //return "Logged in successfully";
             return jwtService.generateToken(employee.getUsername());
         }
 
