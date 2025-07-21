@@ -13,7 +13,6 @@ import com.mini.project.repository.PositionRepository;
 import com.mini.project.utils.DepartmentUtility;
 import com.mini.project.utils.PositionUtility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

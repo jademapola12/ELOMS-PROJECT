@@ -91,10 +91,4 @@ public class EmployeeController {
         employeeService.delete(username);
         return ResponseEntity.noContent().build();
     }
-
-    // for login using username and password
-    @PostMapping("/login")
-    public String login(@RequestBody Employee employee) {
-        return employeeService.verify(employee);
-    }
 }

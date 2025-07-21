@@ -2,8 +2,7 @@ package com.mini.project.controller;
 
 import com.mini.project.dto.EmployeeDto;
 import com.mini.project.dto.ResponseDto;
-import com.mini.project.dto.auth.LoginDto;
-import com.mini.project.entity.Department;
+import com.mini.project.entity.Employee;
 import com.mini.project.enums.MessageType;
 import com.mini.project.enums.StatusType;
 import com.mini.project.service.EmployeeService;
@@ -33,8 +32,9 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<ResponseDto> signup(@RequestBody EmployeeDto employeeDto) {
-
         return employeeService.saveOrUpdate(employeeDto, employeeDto.getUsername()).getResponseEntity();
-
     }
+
+
+
 }

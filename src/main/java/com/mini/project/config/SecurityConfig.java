@@ -34,7 +34,7 @@ public class SecurityConfig {
                 // authorize authenticated requests only
                 .authorizeHttpRequests(request-> request
                         // skip authentication for register and login request
-                        .requestMatchers("/api/employees/save","/api/employees/login").permitAll()
+                        .requestMatchers("/api/auth/signup","/api/auth/login").permitAll()
                         // request authentication for any request
                         .anyRequest().authenticated())
 
